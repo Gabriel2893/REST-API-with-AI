@@ -3,7 +3,7 @@
 
 ## 📚 Sobre o Projeto
 
-Neste repositório, você encontrará o código-fonte de uma REST API, construído com Java 21 e Spring Boot 3, é o resultado de quatro dias de lives, com um propósito incrível (desenvolvido durante a Santander Dev Week 2024)
+Neste repositório, você encontrará o código-fonte de uma REST API, construído com Java 21 e Spring Boot 3, (desenvolvido durante a Santander Dev Week 2024)
 
 > [!NOTE]
 > Objetivo: "Permitir que os usuários conversem com os campeões do League of Legends (LOL)".
