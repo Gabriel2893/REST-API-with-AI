@@ -1,38 +1,38 @@
 
-# Projeto de criação de uma REST API com i.a
+# Creation of a REST API project with AI
 
-## 📚 Sobre o Projeto
+## 📚 About the Project
 
-Neste repositório, você encontrará o código-fonte de uma REST API, construído com Java 21 e Spring Boot 3, (desenvolvido durante a Santander Dev Week 2024)
+In this repository, you will find the source code of a REST API, built with Java 21 and Spring Boot 3, (developed during the Santander Dev Week 2024)
 
 > [!NOTE]
-> Objetivo: "Permitir que os usuários conversem com os campeões do League of Legends (LOL)".
+> Objective: "Allow users to converse with League of Legends (LOL) champions".
 
-Para isso, utilizamos algumas das mais recentes Inteligências Artificiais (IAs) Generativas, possibilitando que nossa API "entenda" a personalidade única de cada campeão para criar interações que capturam sua essência, tornando cada conversa uma experiência única.
+To achieve this, i used some of the latest Generative Artificial Intelligences (AIs), enabling our API to "understand" the unique personality of each champion to create interactions that capture their essence, making each conversation a unique experience.
 
-## 🏛️ Arquitetura do Projeto
+## 🏛️ Project Architecture
 
-### Diagrama Arquitetural
-A seguir, apresento-lhe o diagrama arquitetural do projeto (escrito com [Mermaid](https://mermaid.js.org/)), destacando a separação das responsabilidades entre as camadas. Desde a interface de usuário até os mecanismos de interação com sistemas externos, passando por adaptadores, casos de uso e as entidades centrais do domínio, cada elemento é estrategicamente posicionado para reforçar a modularidade, a escalabilidade e a manutenibilidade do sistema. Esta estrutura facilita a compreensão de como os componentes colaboram para a realização dos objetivos do software, alinhando-se aos princípios da [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) (inclusive nas cores dos elementos).
+### Architectural Diagram
+Next, I'll show you the project's architectural diagram (written with [Mermaid](https://mermaid.js.org/)), highlighting the separation of responsibilities between the layers. From the user interface to the mechanisms for interacting with external systems, including adapters, use cases and the central entities of the domain, each element is strategically positioned to reinforce the modularity, scalability and maintainability of the system. This structure makes it easier to understand how the components collaborate to achieve the software's objectives, in line with the principles of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) (including the colors of the elements).
 
 ```mermaid
 graph RL;
-  subgraph layer-infra[Infraestrutura];
+  subgraph layer-infra[Infrastructure];
     UI("Frontend (UI)") ---> Controller
-    subgraph layer-adpaters[Adaptadores];
+    subgraph layer-adpaters[Adapters];
       Controller("Controllers") <--> UC
-      subgraph layer-app[Aplicação];
-        UC(Casos de Uso) <--> layer-entities
-        subgraph layer-entities["Entidades (Domínio)"];
-          Model("Modelos")
-          IPort("Interfaces das Portas (Gateways)")
+      subgraph layer-app[Application];
+        UC(Use Cases) <--> layer-entities
+        subgraph layer-entities["Entidades (Domain)"];
+          Model("Models")
+          IPort("Port interfaces (Gateways)")
         end
      end
-     Repo("Repositórios") -..-> |implementam| IPort
-     HTTP("Clientes HTTP") -..-> |implementam| IPort
+     Repo("Repositories") -..-> |implement| IPort
+     HTTP("HTTP clients") -..-> |implement| IPort
     end
-    BD("Bancos de Dados SQL") --- Repo
-    EXT("APIs REST de IA") --- HTTP
+    BD("SQL databases") --- Repo
+    EXT("AI REST APIs") --- HTTP
   end
 
 classDef infra fill:#a3c9ff,stroke:#00315c,color:#00315c;
@@ -46,23 +46,23 @@ class UC ucs;
 class Model,IPort entities;
 ```
 
-### Estrutura de Diretórios
+### Directory Structure
 
-Refletindo a organização apresentada no diagrama arquitetural, a estrutura de diretórios do projeto sugere uma Clean Architecture simplificada, visando a uma clara separação das responsabilidades e promovendo a autonomia das camadas em um projeto Spring Boot. Esta abordagem estrutural não só facilita a manutenção e a evolução do código, mas também sustenta a integração e a colaboração eficaz entre as diferentes partes da aplicação. A seguir, detalhamos a disposição dos diretórios que compõem a aplicação, cada um desempenhando um papel específico dentro do ecossistema de software:
+Reflecting the organization shown in the architectural diagram, the project's directory structure suggests a simplified Clean Architecture, aiming for a clear separation of responsibilities and promoting the autonomy of the layers in a Spring Boot project. This structural approach not only facilitates code maintenance and evolution, but also supports integration and effective collaboration between the different parts of the application. Below, we detail the layout of the directories that make up the application, each playing a specific role within the software ecosystem:
 
--   `adapters/`: Inclui os adaptadores que facilitam a comunicação entre a aplicação e o mundo externo (único diretório que "conhece" o Spring).
-    -   `in/`: Abriga os adaptadores de entrada, tais como controladores REST, que lidam com as requisições dos usuários.
-    -   `out/`: Contém os adaptadores de saída, responsáveis da interação com bancos de dados e APIs externas, por exemplo.
--   `application/`: Hospeda os casos de uso da aplicação, encapsulando a lógica de negócios essencial.
--   `domain/`: Representa o coração da aplicação, englobando entidades, exceções e interfaces (portas) que articulam as regras de negócio fundamentais.
-    -   `exception/`: Define as exceções personalizadas pertinentes ao domínio.
-    -   `model/`: Modela as entidades do domínio, refletindo os conceitos centrais da aplicação.
-    -   `ports/`: Estabelece as interfaces que delineiam os contratos para os adaptadores e serviços externos.
--   `Application.java`: A classe principal que orquestra a configuração e o execução da aplicação.
+-   `adapters/`: It includes the adapters that facilitate communication between the application and the outside world (the only directory that “knows” Spring).
+    -   `in/`: It houses the input adapters, such as REST controllers, which handle user requests.
+    -   `out/`: It contains the outbound adapters, responsible for interacting with databases and external APIs, for example.
+-   `application/`: It hosts the application's use cases, encapsulating the essential business logic.
+-   `domain/`: It represents the heart of the application, comprising entities, exceptions and interfaces (ports) that articulate the fundamental business rules.
+    -   `exception/`: Defines the custom exceptions relevant to the domain.
+    -   `model/`: It models the entities of the domain, reflecting the core concepts of the application.
+    -   `ports/`: It establishes the interfaces that outline the contracts for adapters and external services.
+-   `Application.java`: The main class that orchestrates the configuration and execution of the application.
 
-### Banco de Dados SQL em Memória
+### SQL Database in Memory
 
-A utilização do banco de dados H2 neste projeto serve como uma fundação ágil e flexível para modelar nosso domínio de conhecimento — os campeões do LOL. Essa escolha permite uma rápida prototipação e um ambiente de desenvolvimento eficiente, essencial para armazenar e recuperar informações detalhadas sobre cada campeão. Dessa forma, garantimos que as IAs Generativas que integramos possam acessar um repositório rico e detalhado, permitindo-lhes capturar com precisão a essência e a personalidade única de cada campeão, enriquecendo assim a interatividade e a profundidade das interações realizadas.
+The use of the H2 database in this project serves as an agile and flexible foundation for modeling our knowledge domain - the LOL champions. This choice allows for rapid prototyping and an efficient development environment, which is essential for storing and retrieving detailed information about each champion. In this way, we ensure that the Generative AIs we integrate can access a rich and detailed repository, allowing them to accurately capture the essence and unique personality of each champion, thus enriching the interactivity and depth of the interactions carried out.
 
 ```sql
 CREATE TABLE IF NOT EXISTS champions (
@@ -74,16 +74,16 @@ CREATE TABLE IF NOT EXISTS champions (
 );
 
 INSERT INTO champions (name, role, lore, image_url) VALUES
-    ('Jinx', 'Atirador', 'Uma criminosa impulsiva e maníaca de Zaun, Jinx vive para disseminar o caos sem se preocupar com as consequências. Com um arsenal de armas mortais, ela detona as explosões mais altas e mais luminosas para deixar um rastro de destruição e pânico por onde passa. Jinx abomina o tédio e deixa alegremente sua marca caótica de pandemônio aonde quer que vá.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg'),
-    ('Vi', 'Lutador', 'Antiga criminosa das ruas violentas de Zaun, Vi é uma mulher temível, impulsiva e explosiva que tem muito pouco respeito por autoridades. Após ter crescido completamente só, Vi desenvolveu instintos de sobrevivência extremamente certeiros e um senso de humor extremamente ácido. Agora trabalhando com os Vigias de Piltover para manter a paz, ela porta poderosas manoplas hextec capazes de esmagar paredes e suspeitos com a mesma facilidade.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Vi_0.jpg'),
-    ('Ekko', 'Assassino', 'Um prodígio das ruas violentas de Zaun, Ekko manipula o tempo para reverter qualquer situação a seu favor. Usando sua própria invenção, o Revo-Z, ele explora as possíveis bifurcações da realidade para criar o momento perfeito. Embora valorize muito sua liberdade, quando algo ameaça seus amigos, ele não mede esforços para defendê-los. Para meros observadores, Ekko parece conseguir o impossível sempre de primeira.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ekko_0.jpg'),
-    ('Caitlyn', 'Atirador', 'Conhecida como sua melhor pacificadora, Caitlyn também é a melhor escolha de Piltover para livrar a cidade de seus elementos criminosos elusivos. É comum que ela faça dupla com Vi, agindo como um contraponto de calmaria para a natureza impetuosa de sua parceira. Mesmo carregando um rifle hextec único, a arma mais poderosa de Caitlyn é seu intelecto superior, que permite que ela prepare elaboradas armadilhas para qualquer fora da lei tolo o suficiente para operar na Cidade do Progresso.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Caitlyn_0.jpg'),
-    ('Jayce', 'Lutador', 'Jayce é um brilhante inventor que dedicou sua vida a defender Piltover e sua implacável busca pelo progresso. Com seu martelo hextech transformador em mãos, Jayce usa sua força, coragem e considerável inteligência para proteger sua cidade natal. Embora seja aclamado pela cidade como herói, ele não gosta muito da atenção que o heroísmo traz. Mesmo assim, o coração de Jayce está no lugar certo e até aqueles que invejam suas habilidades naturais são gratos à forma como ele protege a Cidade do Progresso.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jayce_0.jpg'),
-    ('Viktor', 'Mago', 'Viktor, o arauto de uma nova era de tecnologia, devotou sua vida ao avanço da humanidade. Um idealista que busca elevar o povo de Zaun a um novo nível de compreensão, ele acredita que somente ao aceitar a evolução gloriosa da tecnologia será possível que a humanidade alcance seu verdadeiro potencial. Com um corpo melhorado por aço e ciência, Viktor é zeloso na sua busca por este brilhante futuro.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viktor_0.jpg'),
-    ('Heimerdinger', 'Mago', 'Um cientista brilhante, mesmo que excêntrico, o Professor Cecil B. Heimerdinger é um dos inventores mais inovadores e estimados que Piltover já conheceu. Incansável em seu trabalho ao ponto da obsessão neurótica, ele busca responder as questões mais impenetráveis do universo. Apesar de suas teorias frequentemente parecerem obscuras e esotéricas, Heimerdinger produziu algumas das máquinas mais miraculosas, sem mencionar letais, de Piltover e ajusta constantemente suas invenções para torná-las ainda mais eficientes.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Heimerdinger_0.jpg'),
-    ('Singed', 'Tanque', 'Singed é um alquimista zaunita de intelecto inigualável, que devotou sua vida a ultrapassar os limites do conhecimento; e nenhum preço, nem sua própria sanidade, é alto demais. Existe cura para sua loucura? Suas misturas raramente falham, mas, para muitos, Singed perdeu qualquer noção da humanidade, deixando uma trilha tóxica de miséria e terror no seu caminho.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Singed_0.jpg'),
-    ('Ryze', 'Mago', 'Considerado pela grande maioria como o mago mais habilidoso de Runeterra, Ryze é um arquimago ancião e amargo que carrega um enorme peso. Dotado de um enorme poder arcano e de uma notável estrutura física, ele busca incansavelmente pelas Runas Globais, que são fragmentos de magia pura que um dia criaram o mundo a partir do nada. Ele deve recuperar esses artefatos antes que eles caiam em mãos erradas, pois Ryze conhece bem os horrores que eles podem infligir em Runeterra.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ryze_0.jpg'),
-    ('Master Yi', 'Assassino', 'Master Yi treinou seu corpo e afiou sua mente para que pensamento e ação se tornassem quase um só. Embora ele prefira recorrer à violência como último recurso, a leveza e a velocidade de sua espada garantem uma resolução sempre veloz. Como um dos últimos praticantes da arte ioniana do Wuju, Yi dedicou sua vida a preservar o legado de seu povo, avaliando potenciais discípulos com as Sete Lentes da Perspicácia para identificar qual deles era o mais digno.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_0.jpg'),
-    ('Garen', 'Lutador', 'Um guerreiro nobre e orgulhoso, Garen faz parte da Vanguarda Destemida. Popular entre seus companheiros e respeitado o suficiente por seus inimigos, sua reputação é nada mais do que o esperado de um herdeiro da prestigiosa família Stemmaguarda, encarregada de defender Demacia e seus ideais. Vestido com uma armadura resistente à magia e empunhando uma poderosa espada, Garen está sempre pronto para confrontar magos e feiticeiros no campo de batalha, em um verdadeiro furacão de aço virtuoso.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg'),
-    ('Teemo', 'Atirador', 'Indiferente até aos obstáculos mais perigosos e ameaçadores, Teemo vasculha o mundo com infinito entusiasmo e animação. Um yordle com uma inabalável moral que se orgulha de seguir o Código dos Escoteiros de Bandópolis, às vezes com tanta dedicação que não se toca das possíveis consequências de suas ações. Embora alguns duvidem da existência dos escoteiros, uma coisa é certa: nunca se deve duvidar das convicções de Teemo.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg');
+   ('Jinx', 'Marksman', 'An impulsive and manic criminal from Zaun, Jinx lives to spread chaos without caring about the consequences. With an arsenal of deadly weapons, she sets off the loudest and brightest explosions to leave a trail of destruction and panic wherever she goes. Jinx abhors boredom and happily leaves her chaotic mark of mayhem wherever she travels.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg'),
+('Vi', 'Fighter', 'A former street criminal from the violent streets of Zaun, Vi is a fearsome, impulsive, and explosive woman with very little respect for authority. Having grown up entirely on her own, Vi has developed extremely accurate survival instincts and an extremely acidic sense of humor. Now working with the Piltover Enforcers to maintain peace, she wields powerful hextech gauntlets capable of smashing walls and suspects with equal ease.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Vi_0.jpg'),
+('Ekko', 'Assassin', 'A prodigy from the violent streets of Zaun, Ekko manipulates time to reverse any situation in his favor. Using his own invention, the Z-Drive, he explores the possible branches of reality to create the perfect moment. Although he values his freedom greatly, when something threatens his friends, he spares no effort to defend them. To mere observers, Ekko seems to achieve the impossible effortlessly.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ekko_0.jpg'),
+('Caitlyn', 'Marksman', 'Known as Piltover\'s finest peacekeeper, Caitlyn is also the city\'s best choice for ridding it of its elusive criminal elements. She often partners with Vi, acting as a calm counterpart to her partner\'s impulsive nature. Even though she carries a unique hextech rifle, Caitlyn\'s most powerful weapon is her superior intellect, which allows her to set elaborate traps for any foolish outlaw daring enough to operate in the City of Progress.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Caitlyn_0.jpg'),
+('Jayce', 'Fighter', 'Jayce is a brilliant inventor who has dedicated his life to defending Piltover and its relentless pursuit of progress. With his transformative hextech hammer in hand, Jayce uses his strength, courage, and considerable intelligence to protect his hometown. Although hailed by the city as a hero, he doesn\'t particularly enjoy the attention that heroism brings. Nevertheless, Jayce\'s heart is in the right place, and even those who envy his natural abilities are grateful for how he safeguards the City of Progress.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jayce_0.jpg'),
+('Viktor', 'Mage', 'Viktor, the herald of a new era of technology, has devoted his life to advancing humanity. An idealist who seeks to elevate the people of Zaun to a new level of understanding, he believes that only by embracing the glorious evolution of technology can humanity reach its true potential. With a body enhanced by steel and science, Viktor is zealous in his pursuit of this bright future.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viktor_0.jpg'),
+('Heimerdinger', 'Mage', 'A brilliant, if eccentric, scientist, Professor Cecil B. Heimerdinger is one of Piltover\'s most innovative and esteemed inventors. Tireless in his work to the point of neurotic obsession, he seeks to answer the most impenetrable questions of the universe. Although his theories often seem obscure and esoteric, Heimerdinger has produced some of Piltover\'s most miraculous, not to mention lethal, machines, constantly fine-tuning his inventions to make them even more efficient.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Heimerdinger_0.jpg'),
+('Singed', 'Tank', 'Singed is a zaunite alchemist of unparalleled intellect who has devoted his life to pushing the boundaries of knowledge; and no price, not even his own sanity, is too high. Is there a cure for his madness? His concoctions rarely fail, but to many, Singed has lost any semblance of humanity, leaving a toxic trail of misery and terror in his wake.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Singed_0.jpg'),
+('Ryze', 'Mage', 'Considered by most to be the most skilled mage in Runeterra, Ryze is an ancient and bitter archmage burdened with immense power. Endowed with vast arcane power and a notable physical structure, he tirelessly seeks the World Runes, which are fragments of pure magic that once created the world from nothing. He must retrieve these artifacts before they fall into the wrong hands, as Ryze knows well the horrors they can inflict on Runeterra.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ryze_0.jpg'),
+('Master Yi', 'Assassin', 'Master Yi has trained his body and sharpened his mind so that thought and action become almost one. Although he prefers to resort to violence as a last resort, the swiftness and speed of his sword ensure a swift resolution. As one of the last practitioners of the Ionian art of Wuju, Yi has dedicated his life to preserving his people\'s legacy, evaluating potential disciples with the Seven Lenses of Insight to identify which one is most worthy.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/MasterYi_0.jpg'),
+('Garen', 'Fighter', 'A noble and proud warrior, Garen is part of the Dauntless Vanguard. Popular among his comrades and respected enough by his enemies, his reputation is nothing less than expected of a scion of the prestigious Crownguard family, tasked with defending Demacia and its ideals. Clad in magic-resistant armor and wielding a powerful sword, Garen is always ready to confront mages and sorcerers on the battlefield, a true whirlwind of virtuous steel.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg'),
+('Teemo', 'Marksman', 'Indifferent to the most dangerous and threatening obstacles, Teemo traverses the world with infinite enthusiasm and excitement. A yordle with unwavering morals who prides himself on following the Scouts Code of Bandle City, sometimes with such dedication that he fails to grasp the potential consequences of his actions. Although some doubt the existence of the scouts, one thing is certain: one should never doubt Teemo convictions.', 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg');
 ```
