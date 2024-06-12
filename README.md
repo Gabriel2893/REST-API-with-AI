@@ -12,7 +12,7 @@ Para isso, utilizei algumas das mais recentes Inteligências Artificiais Gerativ
 ## 🏛️ Arquitetura do Projeto
 
 ### Diagrama de arquitetura
-Em seguida, mostro o diagrama de arquitetura do projeto (escrito com [Mermaid](https://mermaid.js.org/)), destacando a separação de responsabilidades entre as camadas. Desde a interface com o utilizador até aos mecanismos de interação com sistemas externos, passando pelos adaptadores, casos de utilização e entidades centrais do domínio, cada elemento está estrategicamente posicionado para reforçar a modularidade, escalabilidade e manutenibilidade do sistema. Esta estrutura facilita a compreensão da forma como os componentes colaboram para atingir os objectivos do software, em conformidade com os princípios da [Arquitetura Limpa] (https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) (incluindo as cores dos elementos).
+Em seguida, mostro o diagrama de arquitetura do projeto (escrito com [Mermaid](https://mermaid.js.org/)), destacando a separação de responsabilidades entre as camadas. Desde a interface com o utilizador até aos mecanismos de interação com sistemas externos, passando pelos adaptadores, casos de utilização e entidades centrais do domínio, cada elemento está estrategicamente posicionado para reforçar a modularidade, escalabilidade e manutenibilidade do sistema. Esta estrutura facilita a compreensão da forma como os componentes colaboram para atingir os objectivos do software, em conformidade com os princípios da [Arquitetura Limpa](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) (incluindo as cores dos elementos).
 
 
 ```mermaid
